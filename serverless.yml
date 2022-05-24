@@ -32,9 +32,18 @@ functions:
       - httpApi:
           path: /hello
           method: get
+  db:
+    handler: bin/db
+    events:
+      - httpApi:
+          path: /db
+          method: get          
   language:
     handler: bin/language
     events:
+      - httpApi:
+          path: /language
+          method: get    
       - httpApi:
           path: /language
           method: post
