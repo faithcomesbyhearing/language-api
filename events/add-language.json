@@ -1,0 +1,10 @@
+{
+    "httpMethod": "POST",
+    "requestBody": {
+        "code": "ENG",
+        "name": "English"
+    },
+    "pathParameters": {
+      "proxy": "/language"
+    }
+  }

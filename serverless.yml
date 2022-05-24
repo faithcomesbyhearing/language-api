@@ -9,7 +9,7 @@
 #
 # Happy Coding!
 
-service: sls-go-example
+service: language-api
 
 frameworkVersion: '3'
 
@@ -18,7 +18,7 @@ provider:
   runtime: go1.x
 
   stage: ${opt:stage, 'dev'}
-  region: ${env:AWS_REGION, 'us-east-2'}
+  region: ${env:AWS_REGION, 'us-west-2'}
 
 package:
   patterns:
@@ -32,15 +32,19 @@ functions:
       - httpApi:
           path: /hello
           method: get
-  world:
-    handler: bin/world
+  language:
+    handler: bin/language
     events:
       - httpApi:
-          path: /world
-          method: get
+          path: /language
+          method: post
+      - httpApi:
+          path: /language/{id}
+          method: put
 
 plugins:
   - serverless-offline
+
 
 custom:
   serverless-offline:

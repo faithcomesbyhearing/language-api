@@ -1,0 +1,721 @@
+openapi: 3.0.0
+info:
+  version: '0.1'
+  title: 'Language'
+  description:  This service manages FCBH languages 
+  license:
+    name: MIT
+servers:
+  - url: 'localhost:3000'
+paths:  
+  /language:
+    post:
+      summary: Add a new language
+      operationId: addLanguage
+      tags:
+        - language
+      requestBody:
+          $ref: '#/components/requestBodies/language-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+ 
+  /language/{id}:    
+    put:
+      summary: Update an existing language
+      operationId: updateLanguage
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'        
+      requestBody:
+          $ref: '#/components/requestBodies/language-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'    
+    
+    get:
+      summary: Returns details about a particular language
+      operationId: listLanguage
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+      responses:
+        '200':
+          description: 'Details about a single language'
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/language'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes an existing language
+      operationId: deleteLanguage
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'                
+  /language/{id}/name:
+    post:
+      summary: Add a new alternate name for a language
+      operationId: addLanguageName
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'         
+      requestBody:
+          $ref: '#/components/requestBodies/language-alternate-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /language/{id}/name/{name-id}:
+    put:
+      summary: Update an existing alternate name for a language
+      operationId: updateLanguageName
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: name-id
+          in: path
+          description: language name identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                    
+      requestBody:
+          $ref: '#/components/requestBodies/language-alternate-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: retrieve an existing alternate name for a language
+      operationId: getLanguageName
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: name-id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                    
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/language-alternate-name'        
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete an existing alternate name for a language
+      operationId: deleteLanguageName
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: name-id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                    
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /language/{id}/translation:
+    post:
+      summary: Add a new bible translation for a language
+      operationId: addTranslation
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'         
+      requestBody:
+          $ref: '#/components/requestBodies/language-translation-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /language/{id}/translation/{translation-id}:
+    put:
+      summary: Update an existing translation for a language
+      operationId: updateTranslation
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                    
+      requestBody:
+          $ref: '#/components/requestBodies/language-translation-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: retrieve an existing language translation
+      operationId: getTranslationName
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                    
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/language-translation'        
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete an existing alternate name for a language
+      operationId: deleteTranslationName
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                    
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+
+  /language/{id}/translation/{translation-id}/media:
+    post:
+      summary: Add a new media object to a language translation
+      operationId: addMedia
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id' 
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                          
+      requestBody:
+          $ref: '#/components/requestBodies/language-translation-media-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /language/{id}/translation/{translation-id}/media/{media-id}:
+    put:
+      summary: Update an existing media object
+      operationId: updateMedia
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'   
+        - name: media-id
+          in: path
+          description: media identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                                
+      requestBody:
+          $ref: '#/components/requestBodies/language-translation-media-body' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: retrieve an existing language translation
+      operationId: getMedia
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'    
+        - name: media-id
+          in: path
+          description: media identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                                
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/language-translation-media'        
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete an existing media object
+      operationId: deleteMedia
+      tags:
+        - language
+      parameters:
+        - name: id
+          in: path
+          description: language identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'  
+        - name: translation-id
+          in: path
+          description: translation identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'   
+        - name: media-id
+          in: path
+          description: media identifier
+          required: true
+          schema:
+              $ref: '#/components/schemas/id'                                 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+
+components:
+  schemas:
+    id:
+        description: identifier
+        type: integer
+        format: int32      
+    language-code:
+        description: FCBH Language Code identifier
+        type: string
+        minLength: 3
+        maxLength: 3
+    iso3:
+        description: ISO 693-3 Language Code identifier
+        type: string
+        minLength: 3
+        maxLength: 3    
+    rolv-id:
+        description: Registry of Language Variety identifier
+        type: string
+        minLength: 10
+        maxLength: 10             
+    glotto-id:
+        description: GlottoLog identifier
+        type: string
+        minLength: 10
+        maxLength: 10 
+    sensitivity:
+        description: enumeration of language sensitivity options
+        type: string
+        enum: [low, moderate, high, extreme]  
+    language-alternate-type:  
+        description: enumeration of alternate language name type options
+        type: string
+        enum: [pseudonym, autonym, alternate, ethname]    
+    translation-acronym:
+        description: Three letter acronym for bible translation
+        type: string
+        minLength: 3
+        maxLength: 3                 
+    language:
+      type: object
+      required:
+        - code
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/id'  
+          readOnly: true
+        code:
+          $ref: '#/components/schemas/language-code'
+        name:
+          type: string
+        iso3:
+          $ref: '#/components/schemas/iso3'
+        rolv_id:
+          $ref: '#/components/schemas/rolv-id'
+        glotto_id:
+          $ref: '#/components/schemas/glotto-id'
+        speakers:
+          type: integer
+        sensitivity:
+          $ref: '#/components/schemas/sensitivity'          
+        language-director:
+          type: string
+    languages:        
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/language'   
+    language-alternate-name:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'  
+          readOnly: true
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/language-alternate-type'              
+    language-translation:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'  
+          readOnly: true
+        language-id:
+          $ref: '#/components/schemas/id'  
+        acronym:
+          $ref: '#/components/schemas/translation-acronym' 
+        completion-year:
+            type: string
+            minLength: 4
+            maxLength: 4             
+        status:
+            type: string
+            maxLength: 100  
+        methodology:
+            type: string
+            maxLength: 100  
+        translator:
+            type: string
+            maxLength: 100  
+    language-translation-media:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'  
+          readOnly: true
+        translation-id:
+          $ref: '#/components/schemas/id'  
+        derivitave-of:
+          type: string 
+        format:
+            type: string
+        extent:
+            type: string
+        script-code:
+            type: string
+        music:
+            type: string
+        voice:
+            type: string
+        stocknum:
+            type: string
+                  
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+  examples:
+      language:
+        summary: example of a minimal language object
+        value:
+            code: ENG
+            name: English 
+      language-alternate-name-1:
+        summary: example of an alternate language name
+        value:
+            name: xxx
+            type: pseudonym  
+      language-translation:
+        summary: TBD
+        value:
+            name: xxx
+            type: pseudonym   
+      language-translation-media:
+        summary: TBD
+        value:
+            name: xxx
+            type: pseudonym              
+  requestBodies:
+      language-body:
+          description: a JSON object containing language information
+          required: true
+          content: 
+              application/json:
+                  schema:
+                     $ref: '#/components/schemas/language'   
+                  example: 
+                     $ref: '#/components/examples/language'   
+      language-alternate-body:
+          description: a JSON object containing an alternate language name
+          required: true
+          content: 
+              application/json:
+                  schema:
+                     $ref: '#/components/schemas/language-alternate-name'   
+                  example: 
+                     $ref: '#/components/examples/language-alternate-name-1'  
+      language-translation-body:
+          description: a JSON object containing an bible translation
+          required: true
+          content: 
+              application/json:
+                  schema:
+                     $ref: '#/components/schemas/language-translation'   
+                  example: 
+                     $ref: '#/components/examples/language-translation'    
+      language-translation-media-body:
+          description: a JSON object containing an media object for a language translation
+          required: true
+          content: 
+              application/json:
+                  schema:
+                     $ref: '#/components/schemas/language-translation-media'   
+                  example: 
+                     $ref: '#/components/examples/language-translation-media'    
+
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+security:
+  - BasicAuth: []
