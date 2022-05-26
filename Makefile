@@ -10,7 +10,7 @@ clean:
 	rm -rf ./bin ./vendor go.sum
 
 offline: build
-	sls offline --printOutput 
+	sls offline
 
 deploy: clean build
 	sls deploy --verbose

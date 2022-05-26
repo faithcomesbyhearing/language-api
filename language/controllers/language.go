@@ -9,6 +9,18 @@ import (
 	"github.com/workspaces/language-api/language/models"
 )
 
+func GetLanguage(c *gin.Context) {
+	var Language []models.Language
+	_, err := dbmap.Select(&Language, "select * from LANGUAGE.fcbhLanguage")
+
+	if err == nil {
+		c.JSON(200, Language)
+	} else {
+		log.Fatal(err)
+		c.JSON(404, gin.H{"error": "Language not found"})
+	}
+}
+
 func PostLanguage(c *gin.Context) {
 	var Language models.Language
 	c.Bind(&Language)
@@ -69,24 +81,14 @@ func UpdateLanguage(c *gin.Context) {
 			}
 
 		} else {
+			log.Fatal(err)
 			c.JSON(400, gin.H{"error": "fields are empty"})
 		}
 
 	} else {
+		log.Fatal(err)
 		c.JSON(404, gin.H{"error": "Language not found"})
 	}
-}
-
-func GetLanguage(c *gin.Context) {
-	var Language []models.Language
-	_, err := dbmap.Select(&Language, "select * from LANGUAGE.fcbhLanguage")
-
-	if err == nil {
-		c.JSON(200, Language)
-	} else {
-		c.JSON(404, gin.H{"error": "Language not found"})
-	}
-
 }
 
 func GetLanguageDetail(c *gin.Context) {
