@@ -1,9 +1,9 @@
 module github.com/workspaces/language-api
 
-go 1.17
+go 1.18
 
 require (
-	github.com/aws/aws-lambda-go v1.31.1
+	github.com/aws/aws-lambda-go v1.19.1
 	github.com/awslabs/aws-lambda-go-api-proxy v0.13.2
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-gorp/gorp v2.2.0+incompatible
@@ -24,7 +24,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/poy/onpar v1.1.2 // indirect
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.1 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
