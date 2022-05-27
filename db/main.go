@@ -14,7 +14,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	log.Printf("db handler")
 
 	db, err := sql.Open("mysql",
-		"sa:password@host.docker.internal:3310/LANGUAGE")
+		"root:password@tcp(host.docker.internal:3306)/LANGUAGE")
 	if err != nil {
 		log.Fatal(err)
 	}
