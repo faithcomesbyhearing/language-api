@@ -23,10 +23,8 @@ RUN yarn global add serverless
 
 COPY awslambdarpc /usr/local/bin
 
-ENV GIT_USERNAME=
-ENV GIT_PASSWORD=
-RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/faithcomesbyhearing/datamodel.git
-
+ARG GITHUB_TOKEN
+RUN git clone -b devcontainer https://$GITHUB_TOKEN@github.com/faithcomesbyhearing/datamodel.git
 RUN apt-get update
 RUN apt-get install -y default-mysql-client 
 
