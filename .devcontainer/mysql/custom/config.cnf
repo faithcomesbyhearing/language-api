@@ -1,1 +1,2 @@
-SET GLOBAL local_infile = 'ON';
+[mysqld]
+local_infile=ON

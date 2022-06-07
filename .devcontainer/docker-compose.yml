@@ -11,6 +11,7 @@ services:
         VARIANT: "1.18"
         # Options
         NODE_VERSION: "lts/*"
+    stdin_open: true
     env_file:
       # Ensure that the variables in .env match the same variables in devcontainer.json
       - .env
