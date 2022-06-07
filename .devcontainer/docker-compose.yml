@@ -12,7 +12,6 @@ services:
         # Options
         NODE_VERSION: "lts/*"
         GITHUB_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
-    stdin_open: true
     env_file:
       # Ensure that the variables in .env match the same variables in devcontainer.json
       - .env
