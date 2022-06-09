@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -24,27 +25,39 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("success pinging datasource")
 	var (
-		id   int
-		name string
+		id       int
+		name     string
+		code     string
+		iso3     string
+		response string
 	)
-	rows, err := db.Query("select Id, name, code, iso3 from fcbhLanguage where Id = ?", 1)
+	rows, err := db.Query("select Id, name, code, iso3 from fcbhLanguage limit 10")
 	if err != nil {
 		log.Fatal(err)
+		response := "fatal error (1): " + err.Error()
+		return events.APIGatewayProxyResponse{Body: response, StatusCode: 500}, nil
 	}
 	defer rows.Close()
 	for rows.Next() {
-		err := rows.Scan(&id, &name)
+		err := rows.Scan(&id, &name, &code, &iso3)
 		if err != nil {
 			log.Fatal(err)
+			response := "fatal error (2): " + err.Error()
+			return events.APIGatewayProxyResponse{Body: response, StatusCode: 500}, nil
 		}
-		log.Println(id, name)
+		response += fmt.Sprintf("%d %s %s %s\n", id,
+			name, code, iso3)
+		log.Println(id, name, code, iso3)
 	}
 	err = rows.Err()
 	if err != nil {
 		log.Fatal(err)
+		response := "fatal error (3): " + err.Error()
+		return events.APIGatewayProxyResponse{Body: response, StatusCode: 500}, nil
 	}
-	return events.APIGatewayProxyResponse{Body: "response from DB endpoint", StatusCode: 200}, nil
+	return events.APIGatewayProxyResponse{Body: response, StatusCode: 200}, nil
 }
 
 func main() {
