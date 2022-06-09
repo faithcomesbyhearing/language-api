@@ -12,7 +12,7 @@ import (
 var dbmap = initDb()
 
 func initDb() *gorp.DbMap {
-	db, err := sql.Open("mysql", "root:Bumitama2016!mysql@tcp(localhost:3306)/test")
+	db, err := sql.Open("mysql", "root:password@tcp(host.docker.internal:3306)/LANGUAGE")
 	checkErr(err, "sql.Open failed")
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 	err = dbmap.CreateTablesIfNotExists()
