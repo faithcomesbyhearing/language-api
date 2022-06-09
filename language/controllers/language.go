@@ -4,9 +4,9 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/faithcomesbyhearing/language-api/language/models"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/workspaces/language-api/language/models"
 )
 
 func GetLanguage(c *gin.Context) {

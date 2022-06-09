@@ -13,7 +13,8 @@ paths:
       summary: Add a new language
       operationId: addLanguage
       tags:
-        - language
+        - language 
+        - CRUD
       requestBody:
           $ref: '#/components/requestBodies/language-body' 
       responses:
@@ -23,13 +24,63 @@ paths:
             application/json:
               schema:
                 type: integer
+                minimum: 1
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
- 
+    get:
+      summary: Filter for Language
+      operationId: filterLanguage
+      tags:
+        - language 
+        - filter
+      parameters:
+        - in: query
+          name: code
+          schema:
+            $ref: '#/components/schemas/language-code'
+          required: false
+          description: FCBH language code
+        - in: query
+          name: iso
+          schema:
+            $ref: '#/components/schemas/iso3'
+          required: false
+        - in: query
+          name: rolv_id
+          schema:
+            $ref: '#/components/schemas/rolv-id'
+          required: false
+        - in: query
+          name: glotto_id
+          schema:
+            $ref: '#/components/schemas/glotto-id'
+          required: false
+        - in: query
+          name: sensitivity
+          schema: 
+            $ref: '#/components/schemas/sensitivity'   
+          required: false
+        - in: query 
+          name: language-director
+          schema: 
+            $ref: '#/components/schemas/language-director'  
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/languages'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /language/{id}:    
     put:
       summary: Update an existing language
@@ -52,6 +103,7 @@ paths:
             application/json:
               schema:
                 type: integer
+                minimum: 1
         default:
           description: Unexpected error
           content:
@@ -523,35 +575,46 @@ components:
     id:
         description: identifier
         type: integer
-        format: int32      
+        format: int32   
+        readOnly: true
+        example: 201
     language-code:
         description: FCBH Language Code identifier
         type: string
         minLength: 3
         maxLength: 3
+        example: SPA
     iso3:
         description: ISO 693-3 Language Code identifier
         type: string
         minLength: 3
-        maxLength: 3    
+        maxLength: 3  
+        example: SPA
     rolv-id:
         description: Registry of Language Variety identifier
         type: string
         minLength: 10
-        maxLength: 10             
+        maxLength: 10  
+        example: "04557"
     glotto-id:
         description: GlottoLog identifier
         type: string
         minLength: 10
         maxLength: 10 
+        example: "stan1288"
     sensitivity:
         description: enumeration of language sensitivity options
         type: string
         enum: [low, moderate, high, extreme]  
+    language-director:
+        description: Name of director responsible for language translation
+        type: string
+        example: "Bob"
     language-alternate-type:  
         description: enumeration of alternate language name type options
         type: string
-        enum: [pseudonym, autonym, alternate, ethname]    
+        enum: [pseudonym, autonym, alternate, ethname]  
+        example: pseudonym
     translation-acronym:
         description: Three letter acronym for bible translation
         type: string
@@ -565,11 +628,11 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'  
-          readOnly: true
         code:
           $ref: '#/components/schemas/language-code'
         name:
           type: string
+          example: "Spanish"
         iso3:
           $ref: '#/components/schemas/iso3'
         rolv_id:
@@ -578,10 +641,11 @@ components:
           $ref: '#/components/schemas/glotto-id'
         speakers:
           type: integer
+          example: 300000
         sensitivity:
           $ref: '#/components/schemas/sensitivity'          
         language-director:
-          type: string
+          $ref: '#/components/schemas/language-director'   
     languages:        
       type: object
       additionalProperties:
@@ -591,7 +655,6 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'  
-          readOnly: true
         name:
           type: string
         type:
@@ -601,7 +664,6 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'  
-          readOnly: true
         language-id:
           $ref: '#/components/schemas/id'  
         acronym:
@@ -624,7 +686,6 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'  
-          readOnly: true
         translation-id:
           $ref: '#/components/schemas/id'  
         derivitave-of:
@@ -663,7 +724,7 @@ components:
       language-alternate-name-1:
         summary: example of an alternate language name
         value:
-            name: xxx
+            name: Some Alternate Name
             type: pseudonym  
       language-translation:
         summary: TBD

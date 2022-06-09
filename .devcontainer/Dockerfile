@@ -22,3 +22,12 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 RUN yarn global add serverless
 
 COPY awslambdarpc /usr/local/bin
+
+ARG GITHUB_TOKEN
+RUN git clone -b devcontainer https://$GITHUB_TOKEN@github.com/faithcomesbyhearing/datamodel.git
+RUN apt-get update
+RUN apt-get install -y default-mysql-client 
+
+ADD initializeData.sh .
+RUN chmod +x initializeData.sh
+ENTRYPOINT [ "./initializeData.sh" ]
