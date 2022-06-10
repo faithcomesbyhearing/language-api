@@ -25,8 +25,8 @@ COPY awslambdarpc /usr/local/bin
 
 ARG GITHUB_TOKEN
 RUN git clone -b devcontainer https://$GITHUB_TOKEN@github.com/faithcomesbyhearing/datamodel.git
-RUN apt-get update
-RUN apt-get install -y default-mysql-client 
+RUN apt-get update \
+ && apt-get install -y default-mysql-client 
 
 ADD initializeData.sh .
 RUN chmod +x initializeData.sh
