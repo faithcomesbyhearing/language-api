@@ -43,7 +43,10 @@ functions:
     events:
       - httpApi:
           path: /language
-          method: get    
+          method: get  
+      - httpApi:
+          path: /language/{id}
+          method: get  
       - httpApi:
           path: /language
           method: post
