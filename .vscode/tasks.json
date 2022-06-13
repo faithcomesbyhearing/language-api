@@ -27,7 +27,7 @@
         {
             "label": "send-lambda-event",
             "type": "shell",
-            "command": "awslambdarpc -e ${input:json}",
+            "command": "awslambdarpc -a host.docker.internal:3000 -e ${input:json}",
             "problemMatcher": []
         }
     ]

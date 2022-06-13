@@ -37,6 +37,12 @@ functions:
     events:
       - httpApi:
           path: /db
+          method: get 
+  experimental:
+    handler: bin/experimental
+    events:
+      - httpApi:
+          path: /experimental
           method: get          
   language:
     handler: bin/language

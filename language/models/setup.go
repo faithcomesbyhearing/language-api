@@ -10,15 +10,13 @@ var DB *gorm.DB
 
 func ConnectDatabase() {
 
-	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(host.docker.internal:3306)/LANGUAGE")
+	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(db:3306)/LANGUAGE?charset=utf8mb4&parseTime=True&loc=Local")
 	//log.Printf("MYSQL_CONNECT_STRING: %s", dsn)
 	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
-
-	database.AutoMigrate(&Language{})
 
 	DB = database
 }
