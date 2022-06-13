@@ -20,6 +20,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${env:AWS_REGION, 'us-west-2'}
 
+  # environment: 
+  #  GODEBUG: netdns=cgo
+
 package:
   patterns:
     - '!./**'
@@ -40,6 +43,7 @@ functions:
           method: get 
   experimental:
     handler: bin/experimental
+    timeout: 30
     events:
       - httpApi:
           path: /experimental

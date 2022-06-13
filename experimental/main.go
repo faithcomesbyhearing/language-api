@@ -5,8 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"net"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -34,15 +32,29 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 
 func ConnectDatabase() {
 	fmt.Println("... ConnectDatabase")
-	nameserver, _ := net.LookupNS("db")
-	for _, ns := range nameserver {
-		addrs, errIP := net.LookupIP(ns.Host)
-		if errIP == nil {
-			fmt.Printf("%s\n", addrs[0].String())
-		} else {
-			fmt.Printf("%s\n", errIP.Error())
-		}
-	}
+
+	// r := &net.Resolver{
+	// 	PreferGo: true,
+	// Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+	// 	d := net.Dialer{
+	// 		Timeout: time.Millisecond * time.Duration(10000),
+	// 	}
+	// 	return d.DialContext(ctx, network, "8.8.8.8:53")
+	// },
+	// }
+	// ip, _ := r.LookupHost(context.Background(), "www.google.com")
+
+	// print(ip[0])
+
+	// nameserver, _ := net.LookupNS("db")
+	// for _, ns := range nameserver {
+	// 	addrs, errIP := net.LookupIP(ns.Host)
+	// 	if errIP == nil {
+	// 		fmt.Printf("%s\n", addrs[0].String())
+	// 	} else {
+	// 		fmt.Printf("%s\n", errIP.Error())
+	// 	}
+	// }
 
 	// ips, err := net.LookupIP("db")
 	// if err != nil {
@@ -53,16 +65,24 @@ func ConnectDatabase() {
 	// 	fmt.Printf("google.com. IN A %s\n", ip.String())
 	// }
 
-	time.Sleep(300 * time.Second)
+	//time.Sleep(300 * time.Second)
 
-	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(db:3306)/LANGUAGE?charset=utf8mb4&parseTime=True&loc=Local")
+	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(docker.internal.host:3306)/LANGUAGE?charset=utf8mb4&parseTime=True&loc=Local")
 	log.Printf("MYSQL_CONNECT_STRING: %s", dsn)
 
 	db, err := sql.Open("mysql", dsn)
 
 	if err != nil {
-		panic("Failed to connect to database!")
+		panic("Failed to connect to database!" + err.Error())
 	}
+	defer db.Close()
+	log.Printf("attempting ping")
+	err = db.Ping()
+	if err != nil {
+		panic("Failed to ping database!" + err.Error())
+	}
+	log.Printf("success pinging datasource from go-provided SQL driver")
+
 	log.Printf("success opening DB from go-provided SQL driver ")
 	db.Close()
 
