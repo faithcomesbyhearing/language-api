@@ -23,6 +23,9 @@ The remote container honors the following environment variables to be set in the
 * AWS_ACCESS_KEY_ID
 * AWS_SECRET_ACCESS_KEY
 * AWS_REGION _(optional) - defaults to `us-east-2`_
+* DB_ROOT_PASSWORD _for local mysql. (default: password)_
+* DB_DATABASE   _(default: LANGUAGE)_
+* GITHUB_PERSONAL_ACCESS_TOKEN  _required to pull private GitHub datamodel repo_
 
 ####  Developer Configuration
 
@@ -43,6 +46,23 @@ There are some predefined makefile targets that can be used to simplify common t
 
 > _Note: Due to limitations in serverless-offline with GoLang, this does NOT allow for debugging_
 
+#### Understanding the development environment
+##### Host (eg your development machine)
+- Docker Desktop (or comparable)
+- Visual Studio Code with Remote Container plugin
+- source code
+    - .devcontainer/devcontainer.json: describes how to configure the Remote Container. Typically contains a Dockerfile or a docker-composes.yml, and any associated files. When the developer invokes Vscode "Reopen in container", devcontainer.json is consulted
+##### VsCode Remote Container
+When the vscode project is opened in Remote Container, the developer is actually executing within the Docker environment described by .devcontainer/devcontainer.json. In the bottom left of Vscode, it reads "Dev Container: Go and Mysql". Port 3306 is exposed based on configuration in docker-compose.yml
+
+From this configuration, the developer can rapidly edit, build and test following this procedure:
+1. from a terminal, type `make offline`. The images will be built if necessary, and then the containers started, following the configuration in docker-compose.yml. Note that sls offline exposes two additional ports: 3000 (for API Gateway requests) and 3002.
+2. using Postman, submit HTTP requests similar to https://localhost:3000/language
+    - the request will be handled by sls offline plugin listening at port 3000. The plugin will translate the HTTP request to an API Gateway Proxy request and pass it to the lambda container
+    - the sls offline plugin will translate the API Gateway Proxy response to an HTTP response and return it to Postman
+
+Note that you cannot run the debugger in this configuration.
+
 #### Debugging
 
 This Remote Container is preconfigured so that any Go Lambda handler can be debugged individually.   There is **NOT**, however, currently a way to do this via an API (over http(s)).  Since a Lambda function is essentially just an RPC call, we instead will simply start the Function with the Debugger attached, and then make an "RPC" call sending the desired payload to the function.
@@ -61,3 +81,27 @@ To debug GoLang based Lambda functions, use the following procedure:
     2. From a Terminal Window, execute `awslambdarpc -e events/<choosefile>.json`
 6. At this point, it will execute your Handler, and any breakpoints you have set will be honored.
 7. Debug as normal
+
+
+#### Recommended Developer Workflow
+Development with debugger:
+1. open project in Dev Container
+2. select go file containing Lambda Handler
+3. start debugger
+4. `awslambdarpc -e events/foo.json` (or whatever)
+
+Black box testing locally: 
+1. open project in Dev Container
+2. `make offline`
+3. submit requests with Postman to localhost:3000
+
+Testing in AWS:
+1. open project in Dev Container
+2. `make deploy`
+3. submit requests with Postman to API Gateway endpoint url
+#### Pitfalls and Troubleshooting
+
+1. Executing sls invoke local does not work.  this command uses the sls offline plugin, which configures the lambda container different than docker-compose.   More investigation is needed to explore this. Workaround: use Postman to call localhost:3000. 
+
+2. awslambdarpc returns "Unexpected EOF"
+Explanation: only use awslambdarpc when running in debug mode. The debugger exposes port 3000 for connections. In this configuration, no API Gateway is involved. Events submitted by awslambdarpc must contain the structure provided by the API Gateway
