@@ -22,8 +22,8 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 		models.ConnectDatabase()
 		//r.Use(controllers.Cors())
 
-		r.GET("/", controllers.FindLanguages)
-		r.GET("/:id", controllers.GetLanguage)
+		r.GET("/language", controllers.FindLanguages)
+		r.GET("/language/:id", controllers.GetLanguage)
 		// r.POST("/", controllers.PostLanguage)
 		// r.PUT("/:id", controllers.UpdateLanguage)
 

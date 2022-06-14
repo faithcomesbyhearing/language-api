@@ -10,3 +10,7 @@ type Language struct {
 	Speakers         string `db:"speakers" json:"speakers"`
 	LanguageDirector string `db:"languageDirector" json:"languageDirector"`
 }
+
+func (Language) TableName() string {
+	return "fcbhLanguage"
+}
