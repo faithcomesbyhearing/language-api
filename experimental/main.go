@@ -19,10 +19,10 @@ func main() {
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	ConnectDatabase()
 	return events.APIGatewayProxyResponse{
-		StatusCode:        400,
+		StatusCode:        200,
 		MultiValueHeaders: nil,
 		Body:              "output",
-		IsBase64Encoded:   true,
+		IsBase64Encoded:   false,
 	}, nil
 }
 

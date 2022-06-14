@@ -13,7 +13,7 @@ clean:
 	rm -rf ./bin ./vendor go.sum go.mod
 
 offline: build
-	SLS_DEBUG=* sls offline --printOutput --dockerNetwork=db
+	sls offline
 
 deploy: clean build
 	sls deploy --verbose
