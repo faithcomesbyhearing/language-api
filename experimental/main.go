@@ -67,7 +67,7 @@ func ConnectDatabase() {
 
 	//time.Sleep(300 * time.Second)
 
-	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(docker.internal.host:3306)/LANGUAGE?charset=utf8mb4&parseTime=True&loc=Local")
+	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(host.docker.internal:3306)/LANGUAGE?charset=utf8mb4&parseTime=True&loc=Local")
 	log.Printf("MYSQL_CONNECT_STRING: %s", dsn)
 
 	db, err := sql.Open("mysql", dsn)
