@@ -15,6 +15,15 @@ frameworkVersion: '3'
 
 provider:
   name: aws
+  httpApi:
+    # Payload format version (note: use quotes in YAML: '1.0' or '2.0') (default: '2.0')
+    payload: '1.0'
+    # Enable detailed CloudWatch metrics (default: false)
+    metrics: true
+    # Enable CORS HTTP headers with default settings (allow all)
+    # Can be fine-tuned with specific options
+    cors: true
+
   runtime: go1.x
 
   stage: ${opt:stage, 'dev'}

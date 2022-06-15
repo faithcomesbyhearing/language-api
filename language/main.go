@@ -21,9 +21,9 @@ func init() {
 	models.ConnectDatabase()
 	//r.Use(controllers.Cors())
 
-	r.GET("/", controllers.FindLanguages)
-	r.GET("/language", controllers.FindLanguages)
 	r.GET("/language/:id", controllers.GetLanguage)
+	r.GET("/language", controllers.FindLanguages)
+
 	// r.POST("/", controllers.PostLanguage)
 	// r.PUT("/:id", controllers.UpdateLanguage)
 
