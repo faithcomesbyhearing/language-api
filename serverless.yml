@@ -37,7 +37,22 @@ package:
     - '!./**'
     - ./bin/**
 
-functions:
+functions:         
+  language:
+    handler: bin/language
+    events:
+      - httpApi:
+          path: /language
+          method: get  
+      - httpApi:
+          path: /language/{id}
+          method: get  
+      - httpApi:
+          path: /language
+          method: post
+      - httpApi:
+          path: /language/{id}
+          method: put
   hello:
     handler: bin/hello
     events:
@@ -56,23 +71,7 @@ functions:
     events:
       - httpApi:
           path: /experimental
-          method: get          
-  language:
-    handler: bin/language
-    events:
-      - httpApi:
-          path: /language
-          method: get  
-      - httpApi:
-          path: /language/{id}
-          method: get  
-      - httpApi:
-          path: /language
-          method: post
-      - httpApi:
-          path: /language/{id}
-          method: put
-
+          method: get 
 plugins:
   - serverless-offline
 

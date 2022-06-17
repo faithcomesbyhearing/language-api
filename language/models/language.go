@@ -1,5 +1,14 @@
 package models
 
+type AddLanguageBody struct {
+	Name string `db:"name" json:"name" binding:"required"`
+	Code string `db:"code" json:"code" binding:"required"`
+}
+
+func (AddLanguageBody) TableName() string {
+	return "fcbhLanguage"
+}
+
 type Language struct {
 	Id               int64  `db:"Id" json:"id"`
 	Name             string `db:"name" json:"name"`

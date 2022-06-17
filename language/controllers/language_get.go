@@ -14,18 +14,20 @@ import (
 
 // GET /language
 // Get all languages, filtered
-// FIXME: implement filter
 func FindLanguages(c *gin.Context) {
 	log.Println("FindLanguages")
 	params, _ := url.ParseQuery(c.Request.URL.RawQuery)
 	fmt.Println(params)
 	fmt.Println(params["iso"][0])
 	var languages []models.Language
-
-	var iso = params["iso"][0]
 	var db *gorm.DB = models.DB
-	if len(iso) > 0 {
-		db = db.Where("iso3 = ?", iso)
+
+	for key, value := range params {
+		if key == "iso" && len(value) > 0 {
+			db = db.Where("iso3 = ?", value)
+		} else if key == "name" && len(value) > 0 {
+			db = db.Where("name = ?", value)
+		}
 	}
 	db.Find(&languages)
 

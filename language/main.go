@@ -23,8 +23,8 @@ func init() {
 
 	r.GET("/language/:id", controllers.GetLanguage)
 	r.GET("/language", controllers.FindLanguages)
+	r.POST("/language", controllers.AddLanguage)
 
-	// r.POST("/", controllers.PostLanguage)
 	// r.PUT("/:id", controllers.UpdateLanguage)
 
 	// r.NoRoute(func(c *gin.Context) {
@@ -35,6 +35,9 @@ func init() {
 }
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// fmt.Println("lambda handler... request following..")
+	// fmt.Println(req)
+
 	return ginLambda.ProxyWithContext(ctx, req)
 	//return ginLambda.Proxy(req)
 }

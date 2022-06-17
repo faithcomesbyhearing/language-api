@@ -1,18 +1,9 @@
 {
-  "body": "{\"content\":\"hello world\",\"key\":\"value\"}",
+  "body": "{\"name\":\"foo_json\",\"code\":\"eng\"}",
   "resource": "/{proxy+}",
   "path": "/language",
   "httpMethod": "POST",
-  "isBase64Encoded": true,
-  "queryStringParameters": {
-    "name": "Jaime"
-  },
-  "pathParameters": {
-    "proxy": "/language"
-  },
-  "stageVariables": {
-    "baz": "qux"
-  },
+  "isBase64Encoded": false,
   "headers": {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
     "Accept-Encoding": "gzip, deflate, sdch",
