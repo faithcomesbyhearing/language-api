@@ -52,7 +52,7 @@ functions:
           method: post
       - httpApi:
           path: /language/{id}
-          method: put
+          method: patch
   hello:
     handler: bin/hello
     events:

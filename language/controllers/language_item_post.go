@@ -21,10 +21,10 @@ func AddLanguage(c *gin.Context) {
 	}
 
 	fmt.Println(addLanguage)
-	// if err := models.DB.Create(&models.AddLanguageBody{Name: name, Code: code}).Error; err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Insert failed"})
-	// 	return
-	// }
+	if err := models.DB.Create(addLanguage).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Insert failed"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": "language successfully created - " + addLanguage.Name})
 

@@ -24,8 +24,7 @@ func init() {
 	r.GET("/language/:id", controllers.GetLanguage)
 	r.GET("/language", controllers.FindLanguages)
 	r.POST("/language", controllers.AddLanguage)
-
-	// r.PUT("/:id", controllers.UpdateLanguage)
+	r.PATCH("/language/:id", controllers.UpdateLanguage)
 
 	// r.NoRoute(func(c *gin.Context) {
 	// 	c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
