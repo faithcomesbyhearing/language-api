@@ -15,17 +15,44 @@ frameworkVersion: '3'
 
 provider:
   name: aws
+  httpApi:
+    # Payload format version (note: use quotes in YAML: '1.0' or '2.0') (default: '2.0')
+    payload: '1.0'
+    # Enable detailed CloudWatch metrics (default: false)
+    metrics: true
+    # Enable CORS HTTP headers with default settings (allow all)
+    # Can be fine-tuned with specific options
+    cors: true
+
   runtime: go1.x
 
   stage: ${opt:stage, 'dev'}
   region: ${env:AWS_REGION, 'us-west-2'}
+
+  # environment: 
+  #  GODEBUG: netdns=cgo
 
 package:
   patterns:
     - '!./**'
     - ./bin/**
 
-functions:
+functions:         
+  language:
+    handler: bin/language
+    events:
+      - httpApi:
+          path: /language
+          method: get  
+      - httpApi:
+          path: /language/{id}
+          method: get  
+      - httpApi:
+          path: /language
+          method: post
+      - httpApi:
+          path: /language/{id}
+          method: patch
   hello:
     handler: bin/hello
     events:
@@ -37,20 +64,14 @@ functions:
     events:
       - httpApi:
           path: /db
-          method: get          
-  language:
-    handler: bin/language
+          method: get 
+  experimental:
+    handler: bin/experimental
+    timeout: 30
     events:
       - httpApi:
-          path: /language
-          method: get    
-      - httpApi:
-          path: /language
-          method: post
-      - httpApi:
-          path: /language/{id}
-          method: put
-
+          path: /experimental
+          method: get 
 plugins:
   - serverless-offline
 

@@ -8,30 +8,37 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/faithcomesbyhearing/language-api/language/controllers"
+	"github.com/faithcomesbyhearing/language-api/language/models"
 	"github.com/gin-gonic/gin"
 )
 
 var ginLambda *ginadapter.GinLambda
 
+func init() {
+	// stdout and stderr are sent to AWS CloudWatch Logs
+	log.Printf("Gin cold start")
+	r := gin.Default()
+	models.ConnectDatabase()
+	//r.Use(controllers.Cors())
+
+	r.GET("/language/:id", controllers.GetLanguage)
+	r.GET("/language", controllers.FindLanguages)
+	r.POST("/language", controllers.AddLanguage)
+	r.PATCH("/language/:id", controllers.UpdateLanguage)
+
+	// r.NoRoute(func(c *gin.Context) {
+	// 	c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	// })
+
+	ginLambda = ginadapter.New(r)
+}
+
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	if ginLambda == nil {
-		// stdout and stderr are sent to AWS CloudWatch Logs
-		log.Printf("Gin cold start")
-		r := gin.Default()
+	// fmt.Println("lambda handler... request following..")
+	// fmt.Println(req)
 
-		r.Use(controllers.Cors())
-
-		r.POST("/", controllers.PostLanguage)
-		r.PUT("/:id", controllers.UpdateLanguage)
-		r.GET("/:id", controllers.GetLanguageDetail)
-
-		r.GET("/", controllers.GetLanguage)
-
-		ginLambda = ginadapter.New(r)
-	}
-
-	// return ginLambda.ProxyWithContext(ctx, req)
-	return ginLambda.Proxy(req)
+	return ginLambda.ProxyWithContext(ctx, req)
+	//return ginLambda.Proxy(req)
 }
 
 func main() {

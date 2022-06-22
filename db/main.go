@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/faithcomesbyhearing/language-api/language/util"
 	_ "github.com/go-sql-driver/mysql"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -13,14 +14,14 @@ import (
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Printf("db handler")
-
-	db, err := sql.Open("mysql",
-		"root:password@tcp(host.docker.internal:3306)/LANGUAGE")
+	var dsn = util.Getenv("MYSQL_CONNECT_STRING", "root:password@tcp(host.docker.internal:3306)/LANGUAGE")
+	log.Printf("MYSQL_CONNECT_STRING: %s", dsn)
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
+	log.Printf("attempting ping")
 	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)

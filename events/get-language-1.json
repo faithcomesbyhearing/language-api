@@ -1,0 +1,12 @@
+{
+  "httpMethod": "GET",
+  "queryStringParameters": {
+    "name": "1"
+  },
+  "pathParameters": {
+    "proxy": "/language"
+  }
+}
+
+
+

@@ -1,0 +1,9 @@
+{
+    "resource": "/{proxy+}",
+    "path": "/language",
+    "httpMethod": "GET",
+    "isBase64Encoded": false,
+    "queryStringParameters": {
+      "iso3": "eng"
+    }
+  }
