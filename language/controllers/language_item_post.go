@@ -12,7 +12,10 @@ import (
 func AddLanguage(c *gin.Context) {
 	fmt.Println("Add Language")
 
-	addLanguage := models.AddLanguageBody{}
+	addLanguage := models.AddLanguage{
+		Name: "",
+		Code: "",
+	}
 
 	if err := c.BindJSON(&addLanguage); err != nil {
 		fmt.Println("3.. can't bind body with addLanguage")

@@ -53,6 +53,15 @@ functions:
       - httpApi:
           path: /language/{id}
           method: patch
+      - httpApi:
+          path: /language/{id}/note
+          method: get  
+      - httpApi:
+          path: /language/{id}/note/{note_id}
+          method: get  
+      - httpApi:
+          path: /language/{id}/note
+          method: post         
   hello:
     handler: bin/hello
     events:
