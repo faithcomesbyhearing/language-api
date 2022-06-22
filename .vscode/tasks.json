@@ -27,7 +27,7 @@
         {
             "label": "send-lambda-event",
             "type": "shell",
-            "command": "awslambdarpc  -e ${input:json}",
+            "command": "awslambdarpc -e ${input:json}",
             "problemMatcher": []
         }
     ]
