@@ -19,26 +19,26 @@ func init() {
 	log.Printf("Gin cold start")
 	r := gin.Default()
 	models.ConnectDatabase()
-	//r.Use(controllers.Cors())
 
-	r.GET("/language/:id", controllers.GetLanguage)
 	r.GET("/language", controllers.FindLanguages)
+	r.GET("/language/:id", controllers.GetLanguage)
 	r.POST("/language", controllers.AddLanguage)
 	r.PATCH("/language/:id", controllers.UpdateLanguage)
 
-	// r.NoRoute(func(c *gin.Context) {
-	// 	c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
-	// })
+	r.GET("/language/:id/note", controllers.FindLanguageNotes)
+	r.GET("/language/:id/note/:note_id", controllers.GetLanguageNote)
+	r.POST("/language/:id/note", controllers.AddLanguageNote)
+	//r.PATCH("/language/:id/note/:note-id", controllers.UpdateLanguageNote)
+
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
 
 	ginLambda = ginadapter.New(r)
 }
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// fmt.Println("lambda handler... request following..")
-	// fmt.Println(req)
-
 	return ginLambda.ProxyWithContext(ctx, req)
-	//return ginLambda.Proxy(req)
 }
 
 func main() {

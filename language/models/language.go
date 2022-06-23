@@ -1,11 +1,17 @@
 package models
 
-type AddLanguageBody struct {
+/*
+A note on GORM naming conventions:
+By default, GORM uses ID as primary key, pluralized struct name to snake_cases as table name, snake_case as column name,
+and uses CreatedAt, UpdatedAt to track creating/updating time
+*/
+
+type AddLanguage struct {
 	Name string `db:"name" json:"name" binding:"required"`
 	Code string `db:"code" json:"code" binding:"required"`
 }
 
-func (AddLanguageBody) TableName() string {
+func (AddLanguage) TableName() string {
 	return "fcbhLanguage"
 }
 
