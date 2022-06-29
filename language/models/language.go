@@ -16,13 +16,13 @@ func (AddLanguage) TableName() string {
 }
 
 type UpdateLanguage struct {
-	Name             string `db:"name" json:"name"`
-	Code             string `db:"code" json:"code"`
-	Iso3             string `db:"iso3" json:"iso3"`
-	Rolv_id          string `db:"rolv_id" json:"rolv_id"`
-	Glotto_id        string `db:"glotto_id" json:"glotto_id"`
-	Speakers         string `db:"speakers" json:"speakers"`
-	LanguageDirector string `db:"languageDirector" json:"languageDirector"`
+	Name             string `json:"name"`
+	Code             string `json:"code"`
+	Iso3             string `json:"iso3"`
+	Rolv_id          string `json:"rolv_id"`
+	Glotto_id        string `json:"glotto_id"`
+	Speakers         string `json:"speakers"`
+	LanguageDirector string `gorm:"column:languageDirector" json:"languageDirector"`
 }
 
 func (UpdateLanguage) TableName() string {
@@ -30,16 +30,47 @@ func (UpdateLanguage) TableName() string {
 }
 
 type Language struct {
-	Id               int64  `db:"Id" json:"id" gorm:"<-:create"`
-	Name             string `db:"name" json:"name"`
-	Code             string `db:"code" json:"code"`
-	Iso3             string `db:"iso3" json:"iso3"`
-	Rolv_id          string `db:"rolv_id" json:"rolv_id"`
-	Glotto_id        string `db:"glotto_id" json:"glotto_id"`
-	Speakers         string `db:"speakers" json:"speakers"`
-	LanguageDirector string `db:"languageDirector" json:"languageDirector"`
+	Id               uint            `gorm:"column:Id;primaryKey" json:"id" `
+	Name             string          `json:"name"`
+	Code             string          `json:"code"`
+	Iso3             string          `json:"iso3"`
+	Rolv_id          string          `json:"rolv_id"`
+	Glotto_id        string          `json:"glotto_id"`
+	Speakers         string          `json:"speakers"`
+	LanguageDirector string          `gorm:"column:languageDirector" json:"language_director"`
+	LanguageCountry  LanguageCountry `gorm:"foreignKey:LanguageID" json:"country"`
 }
 
+// `gorm:"foreignKey:LanguageID"`
 func (Language) TableName() string {
 	return "fcbhLanguage"
+}
+
+// ********************* Language Country
+// CountryCategory enum
+type CountryCategory int
+
+const (
+	Primary CountryCategory = iota
+	Other
+)
+
+func (s CountryCategory) String() string {
+	switch s {
+	case Primary:
+		return "primary"
+	case Other:
+		return "other"
+	}
+	return "unknown"
+}
+
+type LanguageCountry struct {
+	LanguageID  uint            `gorm:"column:languageId"`
+	CountryName string          `gorm:"column:countryName" json:"country_name"`
+	Category    CountryCategory `gorm:"column:category" json:"category"`
+}
+
+func (LanguageCountry) TableName() string {
+	return "fcbhLanguage_country"
 }

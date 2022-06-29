@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -12,24 +11,33 @@ import (
 	"gorm.io/gorm"
 )
 
-// GET /language
-// Get all languages, filtered
 func FindLanguages(c *gin.Context) {
 	log.Println("FindLanguages")
-	params, _ := url.ParseQuery(c.Request.URL.RawQuery)
-	fmt.Println(params)
-	fmt.Println(params["iso"][0])
-	var languages []models.Language
+
 	var db *gorm.DB = models.DB
 
+	params, _ := url.ParseQuery(c.Request.URL.RawQuery)
+
+	tx := db.Session(&gorm.Session{})
 	for key, value := range params {
 		if key == "iso" && len(value) > 0 {
-			db = db.Where("iso3 = ?", value)
+			tx = tx.Where("iso3 = ?", value)
 		} else if key == "name" && len(value) > 0 {
-			db = db.Where("name = ?", value)
+			tx = tx.Where("name = ?", value)
 		}
 	}
-	db.Find(&languages)
 
-	c.JSON(http.StatusOK, gin.H{"data": languages})
+	tx = tx.Where("category = ?", "primary")
+
+	type Result struct {
+		Id          int64  `json:"id"`
+		Name        string `json:"name"`
+		Code        string `json:"code"`
+		Iso3        string `json:"iso3"`
+		CountryName string `json:"country" gorm:"column:LanguageCountry__countryName"`
+	}
+	var results []Result
+
+	tx.Model(&models.Language{}).Joins("LanguageCountry").Find(&results)
+	c.JSON(http.StatusOK, gin.H{"data": &results})
 }

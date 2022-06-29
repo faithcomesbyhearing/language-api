@@ -4,6 +4,6 @@
     "httpMethod": "GET",
     "isBase64Encoded": false,
     "queryStringParameters": {
-      "iso3": "eng"
+      "iso": "eng"
     }
   }
